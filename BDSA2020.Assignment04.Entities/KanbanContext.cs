@@ -4,9 +4,10 @@ namespace BDSA2020.Assignment04.Entities
 {
     public class KanbanContext : DbContext
     {
-        public DbSet<Task> Tasks { get; set; }
-        public DbSet<Tag> Tags { get; set; }
-        public DbSet<User> Users { get; set; }
+        public virtual DbSet<Task> Tasks { get; set; }
+        public virtual DbSet<Tag> Tags { get; set; }
+        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<TaskTag> TaskTags {get; set; }
 
         public KanbanContext() { }
 
@@ -26,6 +27,9 @@ namespace BDSA2020.Assignment04.Entities
             modelBuilder.Entity<Tag>()
                         .HasIndex(t => t.Name)
                         .IsUnique();
+
+
+            modelBuilder.Entity<TaskTag>().HasKey(taskTag => new {taskTag.TagId,taskTag.TaskId});
         }
     }
 }

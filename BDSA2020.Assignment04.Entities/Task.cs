@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System;
 
 namespace BDSA2020.Assignment04.Entities
 {
@@ -19,6 +20,6 @@ namespace BDSA2020.Assignment04.Entities
 
         public string Description { get; set; }
 
-        public ICollection<Tag> Tags { get; set; }
+        public virtual ICollection<TaskTag> Tags { get; set; }
     }
 }

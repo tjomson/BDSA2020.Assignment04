@@ -11,6 +11,6 @@ namespace BDSA2020.Assignment04.Entities
         [StringLength(50)]
         public string Name { get; set; }
 
-        public ICollection<Task> Tasks { get; set; }
+        public virtual ICollection<TaskTag> Tasks { get; set; }
     }
 }
