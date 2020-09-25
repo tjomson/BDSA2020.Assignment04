@@ -5,6 +5,7 @@ using BDSA2020.Assignment04.Models;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace BDSA2020.Assignment04.Models.Tests
 {
@@ -53,16 +54,64 @@ namespace BDSA2020.Assignment04.Models.Tests
             var actual = _repository.Delete(i);
 
             Assert.Equal(expected,actual);
+        }
+
+        [Fact]
+        public void ReadAll_should_return_all()
+        {
+            var expected = new int []{1,2,3,4,5};
+            var counter = 0;
             
+            foreach (var TaskDTO in _repository.Read(true))
+            {
+                 Assert.Equal(expected[counter], TaskDTO.Id);
+                counter++;
+            }
+            
+
         }
         
+        [Fact]
+        public void ReadAll_should_not_Return_Removed()
+        {
+            var actual = _repository.Read(false);
+            var expectedIds = new int[]{1,2,4,5};
+            var counter = 0;
+            foreach (var task in actual)
+            {
+                Assert.Equal(expectedIds[counter], task.Id);
+                counter++;
+            }
+        }
 
         
+        [Fact]
+        public void Read_Single_Task()
+        {
+            var actual = _repository.Read(1);
+            
+            Assert.Equal("kekw", actual.Title);
+            Assert.Equal(State.New, actual.State);
+        }
         
+        [Fact]
+        public void Update_test()
+        {
+            var entity = new TaskUpdateDTO{
+                State = State.New
+            };
+                       
+            var actuel = _repository.Update(entity);
+
+            Assert.Equal(Response.Updated,actuel);
+
+
+        }
+
         public void Dispose()
         {
-            _connection.Dispose();
             _context.Dispose();
+            _connection.Dispose();
         }
     }
 }

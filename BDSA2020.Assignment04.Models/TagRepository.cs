@@ -1,6 +1,7 @@
 
 
 using System.Linq;
+using BDSA2020.Assignment04.Entities;
 
 namespace BDSA2020.Assignment04.Models{
 
@@ -8,9 +9,23 @@ namespace BDSA2020.Assignment04.Models{
 
     class TagRepository : ITagRepository
     {
-        public (Response response, int taskId) Create(TagCreateDTO tag)
+
+         private readonly KanbanContext _context;
+        public TagRepository(KanbanContext context)
         {
-            throw new System.NotImplementedException();
+            _context = context;
+        }
+        public (Response response, int tagId) Create(TagCreateDTO tag)
+        {
+            var TagWithSameName = _context.Tags.FirstOrDefault(t => t.Name == tag.Name);
+            if(TagWithSameName != null){
+                return (Response.Conflict,-1);
+            }
+            Tag newTag = new Tag {Name = tag.Name};
+            _context.Add<Tag>(newTag);
+            _context.SaveChanges();
+            return (Response.Created, newTag.Id);
+            
         }
 
         public Response Delete(int tagId, bool force = false)

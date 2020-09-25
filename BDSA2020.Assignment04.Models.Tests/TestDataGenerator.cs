@@ -32,6 +32,8 @@ namespace BDSA2020.Assignment04.Models.Tests{
                 
             };
 
+            
+
             context.Users.AddRange(user, user2);
             context.SaveChanges();
         }
