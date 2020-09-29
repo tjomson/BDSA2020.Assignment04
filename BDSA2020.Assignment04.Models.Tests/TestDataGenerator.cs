@@ -7,10 +7,9 @@ namespace BDSA2020.Assignment04.Models.Tests{
     {
         public static void GenerateTestData(this KanbanContext context)
         {
-
-            var tags1 = new List<Tag>();
-            tags1.Add(new Tag{Id = 1, Name = "brorøjeblik"});
-            tags1.Add(new Tag{Id = 2, Name = "UwU"});
+            var addtag = new Tag{Id = 1, Name = "BobsTag"};
+            new Tag{Id = 1, Name = "brorøjeblik"};
+            new Tag{Id = 2, Name = "UwU"};
             var taskTags1 = new List<TaskTag>();
             taskTags1.Add(new TaskTag{TaskId = 1, TagId = 1});
             taskTags1.Add(new TaskTag{TaskId = 1, TagId = 2});
@@ -28,8 +27,8 @@ namespace BDSA2020.Assignment04.Models.Tests{
 
             var tasks1 = new List<Task>()
                 {
-                    new Task { Title = "kekw", State = State.New, Tags = new List<TaskTag>(){ new TaskTag{TaskId = 1, TagId = 1}, new TaskTag{TaskId = 1, TagId = 2}} } ,
-                    new Task { Title = "pepehands", State = State.Active, Tags = taskTags2 },
+                    new Task { Title = "kekw", State = State.New, /*Tags = new List<TaskTag>(){ new TaskTag{TaskId = 1, TagId = 1}, new TaskTag{TaskId = 1, TagId = 2}}*/ } ,
+                    new Task { Title = "pepehands", State = State.Active },
                     new Task { Title = "pogchamp", State = State.Removed } 
                 };
 
@@ -56,6 +55,7 @@ namespace BDSA2020.Assignment04.Models.Tests{
             
 
             context.Users.AddRange(user, user2);
+            context.Tags.Add(addtag);
             context.SaveChanges();
         }
     }

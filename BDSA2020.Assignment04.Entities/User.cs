@@ -16,6 +16,6 @@ namespace BDSA2020.Assignment04.Entities
         [StringLength(100)]
         public string EmailAddress { get; set; }
 
-        public virtual ICollection<Task> Tasks { get; set; }
+        public ICollection<Task> Tasks { get; set; }
     }
 }

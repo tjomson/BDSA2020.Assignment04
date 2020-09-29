@@ -17,13 +17,11 @@ namespace BDSA2020.Assignment04.Models.Tests
         private readonly TagRepository _repository;
         public TagRepositoryTests()
         {
-            _connection = new SqliteConnection("Filename=:memory:");
-            _connection.Open();
-            var builder = new DbContextOptionsBuilder<KanbanContext>().UseSqlite(_connection);
+            //_connection = new SqliteConnection("Filename=:memory:");
+            //_connection.Open();
+            var builder = new DbContextOptionsBuilder<KanbanContext>().UseInMemoryDatabase(nameof(Create_given_tag));
             _context = new KanbanContext(builder.Options);
             _context.Database.EnsureCreated();
-            _context.GenerateTestData();
-
             _repository = new TagRepository(_context);
 
         }
@@ -48,8 +46,35 @@ namespace BDSA2020.Assignment04.Models.Tests
         [InlineData(1,Response.Deleted, false)]
         public void DeleteTest(int tagId,Response expected, bool force)
         {
+            _context.Tasks.FirstOrDefault();
             var actual = _repository.Delete(tagId, force);
             Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void ReadTest(){
+
+            var expected = new TagDTO{
+                Id = 1,
+                Name = "BobsTag"
+            };
+    
+            var actual = _repository.Read(1);
+
+            Assert.Equal(expected.Id,actual.Id);
+
+
+
+        }
+
+        [Fact]
+        public void readUser(){
+
+            var userBob = _context.Users.Find(2);
+            var tasks = _context.Tasks.FirstOrDefault();
+
+
+            Assert.Equal(true,true);
         }
 
         [Fact]
@@ -60,6 +85,8 @@ namespace BDSA2020.Assignment04.Models.Tests
                 Id = 1,
                 Name = "BobDenAnden"
             };
+
+            _repository.Create(tagupdate);
 
             var actualResponse = _repository.Update(tagupdate);
 
