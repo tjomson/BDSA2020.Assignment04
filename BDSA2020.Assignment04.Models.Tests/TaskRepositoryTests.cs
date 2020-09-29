@@ -18,12 +18,10 @@ namespace BDSA2020.Assignment04.Models.Tests
 
         public TaskRepositoryTests()
         {
-            _connection = new SqliteConnection("Filename=:memory:");
-            _connection.Open();
-            var builder = new DbContextOptionsBuilder<KanbanContext>().UseSqlite(_connection);
+             var builder = new DbContextOptionsBuilder<KanbanContext>().UseInMemoryDatabase("Hej");
             _context = new KanbanContext(builder.Options);
             _context.Database.EnsureCreated();
-            _context.GenerateTestData();
+//            _context.GenerateTestData();
 
             _repository = new TaskRepository(_context);
             
@@ -40,15 +38,13 @@ namespace BDSA2020.Assignment04.Models.Tests
 
             var actual = _repository.Create(input);
 
-            Assert.Equal((Response.Created, 6),actual);
+            Assert.Equal((Response.Created, 4),actual);
         }
 
         [Theory]
         [InlineData (Response.Deleted,1)]
         [InlineData (Response.Deleted,2)]
         [InlineData (Response.Conflict,3)]
-        [InlineData (Response.Conflict,4)]
-        [InlineData (Response.Conflict,5)]
         public void Delete_Task_given_taskids(Response expected,int i)
         {
             var actual = _repository.Delete(i);
@@ -59,7 +55,7 @@ namespace BDSA2020.Assignment04.Models.Tests
         [Fact]
         public void ReadAll_should_return_all()
         {
-            var expected = new int []{1,2,3,4,5};
+            var expected = new int []{1,2,3};
             var counter = 0;
             
             foreach (var TaskDTO in _repository.Read(true))
@@ -111,7 +107,6 @@ namespace BDSA2020.Assignment04.Models.Tests
         public void Dispose()
         {
             _context.Dispose();
-            _connection.Dispose();
         }
     }
 }
